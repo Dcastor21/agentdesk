@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: agentdesk-api
+    runtime: docker
+    dockerfilePath: apps/api/Dockerfile
+    dockerContext: apps/api
+    branch: main
+    autoDeploy: true
+    healthCheckPath: /health
