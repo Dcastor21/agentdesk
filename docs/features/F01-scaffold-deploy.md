@@ -21,6 +21,7 @@ Create a minimal async FastAPI app in `apps/api/`, a placeholder `apps/mcp/` dir
 | Dockerfile in `apps/api/`, not repo root | Keeps build context scoped to the API app; a root Dockerfile would bundle unrelated files and break when MCP is added | Yes |
 | `render.yaml` at repo root, `dockerContext: apps/api` | Render reads `render.yaml` from root; `dockerContext` scopes the build to the API dir so only `apps/api/` is sent to the Docker daemon | Yes |
 | `autoDeploy: true`, `branch: main` | Makes `git push origin main` the sole deploy trigger — no manual dashboard step; rejected always-on preview branches (not needed until multi-env is required) | Yes |
+| `requirements.txt` for Docker deps, not `-e .` | `uv pip install -e .` triggers hatchling to build a wheel and requires a package dir named `agentdesk_api`; the app is a flat `main.py` script, not an installable package — `-r requirements.txt` installs deps without a build step | Yes |
 
 ## Done-when
 
