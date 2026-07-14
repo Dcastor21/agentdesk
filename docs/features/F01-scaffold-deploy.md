@@ -25,4 +25,22 @@ Create a minimal async FastAPI app in `apps/api/`, a placeholder `apps/mcp/` dir
 
 ## Done-when
 
-- Push to main → live `200` on Render's `/health` endpoint.
+- [x] Push to main → live `200` on Render's `/health` endpoint. ✓ confirmed 2026-07-14
+
+---
+
+## Recap
+
+### What got done
+- `apps/api/` scaffolded: `main.py` (async FastAPI, `/health`), `pyproject.toml`, `requirements.txt`, `Dockerfile`, `.dockerignore`
+- `apps/mcp/.gitkeep` reserves the MCP directory without building anything (real server is F10)
+- `render.yaml` at repo root: Docker build from `apps/api/`, `branch: main`, `autoDeploy: true`, `healthCheckPath: /health`
+- `docs/features/F01-scaffold-deploy.md` (this file) tracking all decisions
+- Deploy loop confirmed: `git push origin main` → Render build → live `200 /health`
+
+### What we'd revisit
+- `pyproject.toml` is present but not used by the Dockerfile (deps live in `requirements.txt`). Once the project grows, consider switching to `uv export --format requirements-txt` to keep a single source of truth, or restructuring as a proper package with a `src/` layout.
+- The `master` branch still exists on the remote alongside `main` — worth deleting it to avoid confusion.
+
+### Exact next step to resume cold
+**F02 — Workspaces, auth & RLS tenancy.** Start with the Supabase project setup: create the `workspaces`, `users`, and `sessions` tables with RLS policies, then wire Clerk JWT verification into the FastAPI app as a dependency. Pair prompt: `/pair F02`.
