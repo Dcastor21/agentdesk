@@ -35,6 +35,10 @@ async def get_db(
     """
     async with _pool.acquire() as conn:
         async with conn.transaction():
+            # Switch to the non-superuser role so RLS policies are enforced.
+            # SET LOCAL ROLE reverts automatically when the transaction ends,
+            # so pooled connections never leak role state across requests.
+            await conn.execute("SET LOCAL ROLE authenticated")
             await conn.execute(
                 "SELECT set_config('app.workspace_id', $1, true)",
                 workspace_id,
